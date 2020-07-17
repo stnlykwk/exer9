@@ -5,7 +5,7 @@ import ReactJson from 'react-json-view';
 import { useTable } from 'react-table';
 
 import React, { Component } from 'react';
-import { Button, Nav, Navbar, NavDropdown, Form, FormControl,  } from 'react-bootstrap';
+import { Table, Button, Nav, Navbar, NavDropdown, Form, FormControl,  } from 'react-bootstrap';
 
 function Heading() {
   return (
@@ -33,8 +33,8 @@ function Heading() {
   )
 }
 
-function Table(props) {
-    const data = React.useMemo(() => props.contacts, []);
+function Table0(props) {
+    const data = React.useMemo(() => JSON.parse(props.contacts), [JSON.parse(props.contacts)]);
     const columns = React.useMemo(() => [{
       Header: 'First Name',
       accessor: 'firstName',
@@ -114,36 +114,66 @@ function Table(props) {
     )
 }
 
+function Table1(props) {
+  return (
+    <Table responsive>
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Phone Number</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{props.contacts.firstName}</td>
+          <td>{props.contacts.lastName}</td>
+          <td>{props.contacts.email}</td>
+          <td>{props.contacts.phoneNumber}</td>
+          <td>{props.contacts.notes}</td>
+          <td>Table cell</td>
+          <td>Table cell</td>
+        </tr>
+      </tbody>
+    </Table>
+  )
+}
+
 class ContactPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      contacts: null
+      contacts: {
+        id: 1,
+        firstName: 'asdf',
+        lastName: 'dryjtht',
+        email: 'tdhygdj@gmail.com',
+        phoneNumber: '453-342-3423',
+        notes: ''
+      }
     }
   }
-
-  componentDidMount() {
-    axios.get('http://localhost:3001/contacts')
-      .then((res) => {
-        this.setState({contacts: res.data})
-      })
-      .catch((err) => {
-        console.log('There was an error: ' + err);
-      });
-  }
+  
+  // componentDidMount() {
+  //   axios.get('http://localhost:3001/contacts')
+  //     .then((res) => {
+  //       this.setState({contacts: res.data})
+  //     })
+  //     .catch((err) => {
+  //       console.log('There was an error: ' + err);
+  //     });
+  // }
     
   render() {
-    console.log(this.state.contacts);
-    if (this.state.contacts != null) {
-      return (
-        <>
-          <Heading />
-          <ReactJson src={this.state.contacts} />
-          <Table props={this.state}/>
-        </>
-      )
-    }
-    return "no data";
+    return (
+      <>
+      <Heading />
+      <ReactJson src={this.state.contacts} />
+      <Table1 props={this.state.contact}/>
+      </>
+    )
   }
 }
 
